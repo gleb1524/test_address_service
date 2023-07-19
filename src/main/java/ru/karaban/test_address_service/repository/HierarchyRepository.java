@@ -6,5 +6,5 @@ import ru.karaban.test_address_service.entity.Hierarchy;
 import java.util.List;
 
 public interface HierarchyRepository extends JpaRepository<Hierarchy, Long> {
-    List<Hierarchy> findAllByObjectAddressAndIsActive(Long id, Long isActive);
+    List<Hierarchy> findAllByObjectIdAndIsActive(Long id, Long isActive);
 }

@@ -5,17 +5,13 @@ import com.thoughtworks.xstream.security.AnyTypePermission;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
-import ru.karaban.test_address_service.annotation.PostProxy;
 import ru.karaban.test_address_service.service.AddressService;
 import ru.karaban.test_address_service.service.ImportData;
 import ru.karaban.test_address_service.xml.Addresses;
-import java.io.File;
 import java.io.InputStream;
 
 @Component
-@Order(1)
 @RequiredArgsConstructor
 public class ImportDataAddress implements ImportData {
 

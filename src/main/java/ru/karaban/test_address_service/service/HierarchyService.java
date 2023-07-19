@@ -8,4 +8,5 @@ import java.util.List;
 public interface HierarchyService {
 
     List<Hierarchy> saveAll(Hierarchys elements);
+    List<String> findAllByTypeName(String typeName);
 }

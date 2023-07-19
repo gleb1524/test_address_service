@@ -21,10 +21,10 @@ public class Hierarchy {
     private Long id;
 
     @Column(name = "object_id")
-    private Long objectAddress;
+    private Long objectId;
 
     @Column(name = "parent_obj_id")
-    private Long parentObjectAddress;
+    private Long parentId;
 
     @Column(name = "start_date")
     private LocalDate startDate;

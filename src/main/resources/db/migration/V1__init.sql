@@ -19,11 +19,6 @@ create table AS_ADM_HIERARCHY
     end_date   timestamp,
     is_active  bigint
 );
--- ALTER TABLE AS_ADM_HIERARCHY
---     ADD CONSTRAINT FK_OBJ_ID_ON_PR FOREIGN KEY (change_id) REFERENCES AS_ADDR_OBJ (change_id);
--- ALTER TABLE AS_ADM_HIERARCHY
---     ADD CONSTRAINT FK_OBJ_ID_ON_PR FOREIGN KEY (object_id) REFERENCES AS_ADDR_OBJ (object_id);
--- ALTER TABLE AS_ADM_HIERARCHY
---     ADD CONSTRAINT FK_PARENT_OBJ_ID_ON_PR FOREIGN KEY (parent_obj_id) REFERENCES AS_ADDR_OBJ (object_id);
+
 
 

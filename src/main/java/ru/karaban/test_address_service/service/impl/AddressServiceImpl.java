@@ -7,6 +7,8 @@ import ru.karaban.test_address_service.repository.AddressRepository;
 import ru.karaban.test_address_service.service.AddressService;
 import ru.karaban.test_address_service.xml.attribute.AddressXml;
 import ru.karaban.test_address_service.xml.Addresses;
+
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -40,5 +42,15 @@ public class AddressServiceImpl implements AddressService {
     @Override
     public Address findByObjectId(Long id) {
         return repository.findByObjectIdAndIsActive(id, 1L);
+    }
+
+    @Override
+    public List<Address> getAllAddressByDateAndObjectId(List<Long> ids, LocalDate date) {
+        return repository.findByObjectIdInAndStartDateLessThanAndEndDateGreaterThan(ids, date, date);
+    }
+
+    @Override
+    public List<Address> findAllByObjectId(List<Long> ids) {
+        return repository.findAllByObjectIdInAndIsActive(ids, 1L);
     }
 }

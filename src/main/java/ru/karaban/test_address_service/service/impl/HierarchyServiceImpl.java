@@ -22,11 +22,11 @@ public class HierarchyServiceImpl implements HierarchyService {
 
     @Override
     public List<Hierarchy> saveAll(Hierarchys elements) {
-        List<HierarchyXml> hierarchyXmlList = elements.getHierarchyXmls();
-        List<Hierarchy> hierarchies = hierarchyXmlList.stream().map(hierarchyXml -> Hierarchy.builder()
+        List<HierarchyXml> hierarchyXmls = elements.getHierarchyXmls();
+        List<Hierarchy> hierarchies = hierarchyXmls.stream().map(hierarchyXml -> Hierarchy.builder()
                 .id(hierarchyXml.getID())
-                .objectAddress(hierarchyXml.getOBJECTID())
-                .parentObjectAddress(hierarchyXml.getPARENTOBJID())
+                .objectId(hierarchyXml.getOBJECTID())
+                .parentId(hierarchyXml.getPARENTOBJID())
                 .startDate(hierarchyXml.getSTARTDATE())
                 .endDate(hierarchyXml.getENDDATE())
                 .isActive(hierarchyXml.getISACTIVE())
@@ -35,20 +35,28 @@ public class HierarchyServiceImpl implements HierarchyService {
         return repository.saveAll(hierarchies);
     }
 
-
+@Override
     public List<String> findAllByTypeName(String typeName) {
-        List<Address> allByTypeName = addressService.findAllByTypeName(typeName);
-        List<List<Address>> result = new ArrayList<>();
-        List<String> string = new ArrayList<>();
 
+        List<Address> allByTypeName = addressService.findAllByTypeName(typeName);
+        List<List<Address>> result = getAddresses(allByTypeName);
+        return buildResponseMessage(result);
+    }
+
+    private List<List<Address>> getAddresses(List<Address> allByTypeName) {
+
+        List<List<Address>> result = new ArrayList<>();
         for (Address address : allByTypeName) {
             List<Address> addresses = new ArrayList<>();
-            List<Hierarchy> allAddresses = findAllAddresses(address.getObjectId());
-                for (Hierarchy hierarchy : allAddresses) {
-                    addresses.add(addressService.findByObjectId(hierarchy.getObjectAddress()));
-            }
+            List<Long> objectIds = findAllAddresses(address.getObjectId()).stream().map(Hierarchy::getObjectId).toList();
+            addresses.addAll(addressService.findAllByObjectId(objectIds));
             result.add(addresses);
         }
+        return result;
+    }
+
+    private List<String> buildResponseMessage(List<List<Address>> result) {
+        List<String> string = new ArrayList<>();
         for (List<Address> addresses : result) {
             StringBuilder sb = new StringBuilder();
             for (int i = addresses.size() - 1; i >= 0; i--) {
@@ -68,11 +76,11 @@ public class HierarchyServiceImpl implements HierarchyService {
 
     private List<Hierarchy> findAll(Long id, List<Hierarchy> result) {
 
-        List<Hierarchy> list = repository.findAllByObjectAddressAndIsActive(id, 1L);
+        List<Hierarchy> list = repository.findAllByObjectIdAndIsActive(id, 1L);
         for (Hierarchy hierarchy : list) {
             result.add(hierarchy);
-            findAll(hierarchy.getParentObjectAddress(), result);
-            if(hierarchy.getParentObjectAddress()==0) break;
+            findAll(hierarchy.getParentId(), result);
+            if(hierarchy.getParentId()==0) break;
         }
         return result;
     }
